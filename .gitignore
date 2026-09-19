@@ -1,0 +1,21 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Maven
+target/
+**/target/
+
+# Build output
+build/
+**/build/
+
+# VS Code
+.vscode/
