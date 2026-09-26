@@ -26,7 +26,7 @@ public class Answer {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private Double score;
+    private Integer score;
 
     @Column(columnDefinition = "TEXT")
     private String feedback;

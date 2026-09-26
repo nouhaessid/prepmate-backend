@@ -12,9 +12,10 @@ public record InterviewSessionResponse(
         Integer id,
         InterviewTopic topic,
         Difficulty difficulty,
+        Integer questionCount,
         SessionStatus status,
         LocalDateTime startedAt,
         LocalDateTime completedAt,
-        Double finalScore,
+        Integer finalScore,
         List<QuestionResponse> questions
 ) {}

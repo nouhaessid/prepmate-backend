@@ -23,6 +23,8 @@ public class InterviewSession {
     @Column(nullable = false)
     private String keycloakUserId;
 
+    private Integer questionCount;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private InterviewTopic topic;
@@ -40,7 +42,7 @@ public class InterviewSession {
 
     private LocalDateTime completedAt;
 
-    private Double finalScore;
+    private Integer finalScore;
 
     @OneToMany(
             mappedBy = "session",

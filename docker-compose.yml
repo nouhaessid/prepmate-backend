@@ -31,15 +31,6 @@ services:
       - microservices-net
     restart: unless-stopped
 
-  zipkin:
-    container_name: prepmate_zipkin
-    image: openzipkin/zipkin
-    ports:
-      - "9411:9411"
-    networks:
-      - microservices-net
-    restart: unless-stopped
-
   keycloak:
     container_name: prepmate_keycloak
     image: quay.io/keycloak/keycloak:26.7.0
@@ -50,6 +41,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
       - keycloak_data:/opt/keycloak/data
+      - ./keycloak/themes:/opt/keycloak/themes
     networks:
       - microservices-net
     command:
@@ -64,5 +56,13 @@ networks:
 
 volumes:
   postgres:
+    external: true
+    name: prepmate_postgres
+
   pgadmin:
+    external: true
+    name: prepmate_pgadmin
+
   keycloak_data:
+    external: true
+    name: prepmate_keycloak_data

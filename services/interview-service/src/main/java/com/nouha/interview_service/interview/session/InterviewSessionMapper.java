@@ -15,6 +15,7 @@ public class InterviewSessionMapper {
         return InterviewSession.builder()
                 .topic(request.topic())
                 .difficulty(request.difficulty())
+                .questionCount(request.questionCount())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class InterviewSessionMapper {
                 session.getId(),
                 session.getTopic(),
                 session.getDifficulty(),
+                session.getQuestionCount(),
                 session.getStatus(),
                 session.getStartedAt(),
                 session.getCompletedAt(),

@@ -6,7 +6,7 @@ public record AnswerResponse(
         Integer id,
         Integer questionId,
         String content,
-        Double score,
+        Integer score,
         String feedback,
         String suggestedAnswer,
         List<String> strengths,

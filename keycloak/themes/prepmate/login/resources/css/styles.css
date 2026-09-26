@@ -1,0 +1,375 @@
+/* PrepMate Keycloak theme
+   Same color/type tokens as the Angular app's design system, reimplemented
+   in plain CSS since this runs server-side through Keycloak, not Angular. */
+
+:root {
+    --pm-forest: #0b3d2e;
+    --pm-emerald: #16825d;
+    --pm-emerald-dark: #0f6647;
+    --pm-mint-50: #eef7f2;
+    --pm-paper: #ffffff;
+    --pm-ink: #101915;
+    --pm-slate: #5b6b63;
+    --pm-border: #e3eae6;
+    --pm-error: #b3261e;
+    --pm-error-bg: #fbeceb;
+
+    --pm-font-heading: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --pm-font-body: 'Inter', 'Segoe UI', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--pm-font-body);
+    color: var(--pm-ink);
+    background-color: var(--pm-mint-50);
+}
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    background:
+            radial-gradient(50% 40% at 15% 0%, rgba(22, 130, 93, 0.07), transparent),
+            var(--pm-mint-50);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--pm-paper);
+    border: 1px solid var(--pm-border);
+    border-radius: 18px;
+    box-shadow: 0 24px 60px -34px rgba(11, 61, 46, 0.4);
+    padding: 2.25rem;
+}
+
+.brand-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(155deg, var(--pm-emerald), var(--pm-forest));
+    color: #fff;
+    font-family: var(--pm-font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.brand-name {
+    font-family: var(--pm-font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--pm-ink);
+}
+
+.auth-title {
+    margin: 2rem 0 0;
+    font-family: var(--pm-font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--pm-ink);
+    line-height: 1.25;
+}
+
+.auth-subtitle {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+    color: var(--pm-slate);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.pm-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.pm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pm-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--pm-ink);
+}
+
+.pm-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pm-input {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--pm-border);
+    background-color: var(--pm-paper);
+    padding: 0.65rem 0.85rem;
+    font-family: var(--pm-font-body);
+    font-size: 0.95rem;
+    color: var(--pm-ink);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.pm-input:focus {
+    outline: none;
+    border-color: var(--pm-emerald);
+    box-shadow: 0 0 0 3px rgba(22, 130, 93, 0.12);
+}
+
+.pm-input-error {
+    border-color: var(--pm-error);
+}
+
+.pm-input-error:focus {
+    box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.12);
+}
+
+.pm-input-wrap .pm-input {
+    padding-right: 2.5rem;
+}
+
+.pm-toggle-visibility {
+    position: absolute;
+    right: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    color: var(--pm-slate);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.pm-toggle-visibility:hover {
+    background-color: var(--pm-mint-50);
+    color: var(--pm-ink);
+}
+
+.pm-toggle-visibility .material-icons {
+    font-size: 19px;
+}
+
+.pm-error {
+    font-size: 0.8rem;
+    color: var(--pm-error);
+}
+
+.pm-row-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pm-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--pm-slate);
+    cursor: pointer;
+}
+
+.pm-checkbox input {
+    accent-color: var(--pm-emerald);
+    width: 16px;
+    height: 16px;
+}
+
+.pm-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--pm-emerald);
+    text-decoration: none;
+}
+
+.pm-link:hover {
+    text-decoration: underline;
+}
+
+.pm-button-primary {
+    margin-top: 0.25rem;
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--pm-emerald);
+    color: #fff;
+    font-family: var(--pm-font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.pm-button-primary:hover {
+    background-color: var(--pm-emerald-dark);
+    transform: translateY(-1px);
+}
+
+.pm-button-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.pm-buttons-row {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.pm-buttons-row .pm-button-primary {
+    width: auto;
+    flex: 1;
+}
+
+.auth-footnote {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.auth-footnote-text {
+    font-size: 0.9rem;
+    color: var(--pm-slate);
+    margin: 0;
+}
+
+/* Top-level message banner (login errors, "account updated", etc.) */
+.kc-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.kc-alert .material-icons {
+    font-size: 19px;
+}
+
+.kc-alert-error {
+    background-color: var(--pm-error-bg);
+    color: var(--pm-error);
+}
+
+.kc-alert-warning {
+    background-color: #fdf3e3;
+    color: #8a5a00;
+}
+
+.kc-alert-success {
+    background-color: #e3f6ec;
+    color: var(--pm-emerald-dark);
+}
+
+.kc-alert-info {
+    background-color: var(--pm-mint-50);
+    color: var(--pm-ink);
+}
+
+.pm-button-secondary {
+    width: auto;
+    border: 1px solid var(--pm-border);
+    border-radius: 999px;
+    background-color: var(--pm-paper);
+    color: var(--pm-ink);
+    font-family: var(--pm-font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.pm-button-secondary:hover {
+    background-color: var(--pm-mint-50);
+}
+
+/* Centered panel used by info.ftl and error.ftl */
+.info-panel {
+    text-align: center;
+    padding: 0.5rem 0 0.25rem;
+}
+
+.info-panel__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background-color: var(--pm-mint-50);
+    color: var(--pm-emerald);
+    font-size: 26px !important;
+}
+
+.info-panel__title {
+    margin-top: 1rem;
+}
+
+.info-panel--error .info-panel__icon {
+    background-color: var(--pm-error-bg);
+    color: var(--pm-error);
+}
+
+@keyframes pm-shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+.pm-shake {
+    animation: pm-shake 350ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pm-shake {
+        animation: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .pm-field-row {
+        grid-template-columns: 1fr;
+    }
+}

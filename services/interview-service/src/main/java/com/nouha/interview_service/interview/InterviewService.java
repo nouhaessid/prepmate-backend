@@ -31,8 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InterviewService {
 
-    private static final int MAX_QUESTIONS = 10;
-
     private final InterviewSessionRepository interviewSessionRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -132,7 +130,8 @@ public class InterviewService {
         // 6. Ask AI to evaluate the answer
         EvaluationRequest evaluationRequest = new EvaluationRequest(
                         question.getContent(),
-                        request.content()
+                        request.content(),
+                        session.getDifficulty()
                 );
 
         EvaluationResponse evaluation = aiClient.evaluate(evaluationRequest);
@@ -156,14 +155,14 @@ public class InterviewService {
 
 
         // 11. Check whether this was the last question
-        boolean interviewCompleted = question.getOrderNumber() >= MAX_QUESTIONS;
+        boolean interviewCompleted = question.getOrderNumber() >= session.getQuestionCount();
 
         QuestionResponse nextQuestion = null;
 
-        // 12. If this was question 10, finish the interview
+        // 12. If this was last question , finish the interview
         if (interviewCompleted) {
 
-            Double finalScore = calculateFinalScore(session);
+            Integer finalScore = calculateFinalScore(session);
 
             session.setFinalScore(finalScore);
             session.setStatus(SessionStatus.COMPLETED);
@@ -238,16 +237,14 @@ public class InterviewService {
     }
 
 
-    private double calculateFinalScore(InterviewSession session) {
+    private Integer calculateFinalScore(InterviewSession session) {
 
-        return session.getQuestions()
+        return (int) session.getQuestions()
                 .stream()
                 .filter(question -> question.getAnswer() != null)
-                .mapToDouble(question ->
-                        question.getAnswer().getScore()
-                )
+                .mapToInt(question -> question.getAnswer().getScore())
                 .average()
-                .orElse(0.0);
+                .orElse(0);
     }
 
     public List<InterviewSessionResponse> getMyInterviews(Authentication authentication) {
