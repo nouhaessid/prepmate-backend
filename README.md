@@ -200,7 +200,7 @@ The two repositories are maintained separately while forming one complete PrepMa
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_BACKEND_REPOSITORY_URL
+git clone https://github.com/nouhaessid/prepmate-backend.git
 cd prepmate-backend
 ```
 
