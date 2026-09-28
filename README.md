@@ -1,10 +1,12 @@
 # PrepMate — AI Technical Interview Preparation Platform
 
-PrepMate is an AI-powered technical interview preparation platform built with **Spring Boot**, **Spring Cloud**, **Angular**, **Keycloak**, and **Groq**.
+PrepMate is an AI-powered technical interview preparation platform built with **Spring Boot**, **Spring Cloud**, **Spring Security**, **Angular**, **Keycloak**, and **OpenFeign**.
 
 The platform allows users to practice technical interviews by selecting a topic, difficulty, and number of questions. AI-generated questions are presented one at a time, and submitted answers are evaluated automatically with a score, feedback, strengths, weaknesses, and a suggested answer.
 
 The backend follows a **microservices architecture** and is integrated with a separate Angular frontend.
+
+The system uses **Spring Cloud Config Server** for centralized configuration, **Netflix Eureka** for service discovery, and **OpenFeign** for synchronous communication between microservices.
 
 **Frontend:** [PrepMate Frontend](https://github.com/nouhaessid/prepmate-frontend/)
 
@@ -18,11 +20,12 @@ The main components include:
 
 * **API Gateway** — single entry point for frontend requests and routing.
 * **Config Server** — centralized configuration for backend services.
-* **Eureka Discovery Server** — service registration and discovery.
+* **Netflix Eureka** — service registration and discovery.
 * **User Service** — manages application user profiles and user data.
 * **Interview Service** — manages interview sessions, questions, answers, evaluations, and scores.
 * **AI Service** — generates interview questions and evaluates submitted answers using Groq.
-* **Keycloak** — authentication and authorization.
+* **Keycloak** — identity and authentication provider for user authentication and authorization.
+* **OpenFeign** — declarative HTTP client used for synchronous communication between microservices.
 * **PostgreSQL** — persistent storage for User and Interview services.
 * **Docker / Docker Compose** — containerization and infrastructure management.
 
@@ -57,13 +60,15 @@ After authentication, users can access their PrepMate dashboard and:
 * Review completed interviews and their detailed results.
 * Track interview performance and statistics through the dashboard and profile pages.
 
-During an interview, the **Interview Service** communicates with the **AI Service** to generate questions and evaluate submitted answers. Once all questions are completed, the session is scored and marked as completed.
+During an interview, the **Interview Service** communicates with the **AI Service** through **OpenFeign** to generate questions and evaluate submitted answers.
+
+Once all questions are completed, the interview session receives its final score and is marked as completed.
 
 ---
 
 ## AI Integration
 
-PrepMate uses an AI service to provide two main capabilities.
+PrepMate uses a dedicated **AI Service** to provide two main capabilities.
 
 ### Question Generation
 
@@ -87,13 +92,15 @@ Each evaluation contains:
 * Weaknesses
 * Suggested answer
 
-The AI response uses a **structured JSON format** to make the communication between the AI Service and Interview Service predictable and consistent.
+The AI response uses a **structured JSON format** to make communication between the AI Service and Interview Service predictable and consistent.
+
+The AI Service uses **Groq** as the AI inference provider.
 
 ---
 
 ## Authentication & Authorization
 
-**Keycloak** is used for authentication and authorization.
+**Keycloak** is used as the identity and authentication provider, while **Spring Security** secures the backend APIs and processes authenticated requests.
 
 The platform supports:
 
@@ -107,7 +114,7 @@ The Angular frontend redirects users to Keycloak for authentication and sends th
 
 The backend validates the JWT and uses the authenticated **Keycloak user ID** to associate interview sessions with their owner.
 
-Method-level authorization is used to protect operations such as retrieving, submitting answers to, and deleting interview sessions.
+The Interview Service verifies that authenticated users can only access and modify their own interview sessions.
 
 ---
 
@@ -133,7 +140,9 @@ The Interview Service stores:
 
 An interview session contains multiple questions, while each question can have one submitted answer.
 
-The Interview Service stores the **Keycloak user ID** to identify the owner of an interview session. User data is therefore associated through the shared Keycloak identity rather than through a direct database relationship between the two microservices.
+The Interview Service stores the **Keycloak user ID** to identify the owner of an interview session.
+
+User data is therefore associated through the shared **Keycloak identity** rather than through a direct database relationship between the User Service and Interview Service.
 
 ### Entity Relationship Diagram
 
@@ -143,13 +152,11 @@ The Interview Service stores the **Keycloak user ID** to identify the owner of a
 
 ## Service Communication
 
-PrepMate uses several communication mechanisms.
+PrepMate uses HTTP-based communication between its services.
 
 ### Synchronous Communication
 
-Services communicate through HTTP APIs.
-
-For example:
+The **Interview Service** communicates with the **AI Service** through **OpenFeign**.
 
 ```text
 Interview Service
@@ -159,17 +166,19 @@ Interview Service
    AI Service
 ```
 
-The Interview Service uses **OpenFeign** to communicate with the AI Service for question generation and answer evaluation.
+OpenFeign provides a declarative HTTP client for calling the AI Service without manually implementing the HTTP communication logic.
+
+The AI Service is an internal backend service and is accessed by the Interview Service rather than directly by the frontend.
 
 ### Service Discovery
 
 **Netflix Eureka** is used as the service registry.
 
-Services register themselves with Eureka and use the registry for service discovery.
+Backend services register themselves with Eureka, allowing services to discover other services dynamically instead of relying on hard-coded service locations.
 
 ### API Gateway
 
-The Angular frontend communicates with the backend through the API Gateway.
+The Angular frontend communicates with the backend through the **API Gateway**.
 
 ```text
 Angular
@@ -179,7 +188,17 @@ API Gateway
 Microservices
 ```
 
-The AI Service is an internal service and is accessed by the Interview Service rather than directly by the frontend.
+The Gateway provides the external entry point to the backend services, while internal service-to-service communication can use service discovery and OpenFeign.
+
+---
+
+## Centralized Configuration
+
+**Spring Cloud Config Server** provides centralized configuration for the backend microservices.
+
+Instead of maintaining configuration independently in every service, shared and environment-specific configuration can be managed through the Config Server.
+
+This includes configuration required by services such as the Gateway, User Service, Interview Service, and AI Service.
 
 ---
 
@@ -187,7 +206,7 @@ The AI Service is an internal service and is accessed by the Interview Service r
 
 The backend is integrated with a separate **Angular** frontend.
 
-The frontend communicates with the backend through the API Gateway and uses Keycloak for authentication.
+The frontend communicates with the backend through the **API Gateway** and uses **Keycloak** for authentication.
 
 **Frontend repository:** [PrepMate Frontend](https://github.com/nouhaessid/prepmate-frontend/)
 
@@ -227,7 +246,7 @@ docker compose up -d
 
 Start the Spring Boot microservices.
 
-The services will register with Eureka and use the configured service discovery, centralized configuration, and gateway infrastructure.
+The services will register with **Netflix Eureka** and use the configured **Spring Cloud Config Server**, service discovery, and API Gateway infrastructure.
 
 ---
 
