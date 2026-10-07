@@ -23,7 +23,7 @@ The main components include:
 * **Netflix Eureka** — service registration and discovery.
 * **User Service** — manages application user profiles and user data.
 * **Interview Service** — manages interview sessions, questions, answers, evaluations, and scores.
-* **AI Service** — generates interview questions and evaluates submitted answers using Groq.
+* **AI Service** — generates interview questions and evaluates submitted answers using the Groq API with the `openai/gpt-oss-20b` model.
 * **Keycloak** — identity and authentication provider for user authentication and authorization.
 * **OpenFeign** — declarative HTTP client used for synchronous communication between microservices.
 * **PostgreSQL** — persistent storage for User and Interview services.
@@ -94,7 +94,7 @@ Each evaluation contains:
 
 The AI response uses a **structured JSON format** to make communication between the AI Service and Interview Service predictable and consistent.
 
-The AI Service uses **Groq** as the AI inference provider.
+The AI Service uses the **Groq API** with the `openai/gpt-oss-20b` model for question generation and answer evaluation.
 
 ---
 
